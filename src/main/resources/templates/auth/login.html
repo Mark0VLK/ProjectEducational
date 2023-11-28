@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Please Log In</title>
+</head>
+<body>
+
+<form name="f" method="post" action="/process_login">
+    <label for="username">Введите имя пользователя:</label><br>
+    <input type="text" name="username" id="username"/><br>
+    <label for="password">Введите пароль:</label><br>
+    <input type="password" name="password" id="password"/><br>
+    <input type="submit" value="Login"/>
+    <div th:if="${param.error}" style="color:red">Неверные имя пользователя или пароль!
+    </div>
+</form>
+</body>
+</html>
