@@ -1,6 +1,9 @@
 package com.example.spr.models;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -10,6 +13,7 @@ public class Person {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
 
     @NotEmpty(message = "Имя не должно быть пустым")
     @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
@@ -23,13 +27,20 @@ public class Person {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
+    private String role;
+
+    @Column(name = "email")
+    private String email;
+
 
     public Person() {
     }
 
-    public Person(String username, int yearOfBirth) {
+    public Person(String username, int yearOfBirth, String email) {
         this.username = username;
         this.yearOfBirth = yearOfBirth;
+        this.email = email;
     }
 
     public int getId() {
@@ -64,6 +75,23 @@ public class Person {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
     @Override
     public String toString() {
         return "Person{" +
@@ -73,4 +101,6 @@ public class Person {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+
 }
