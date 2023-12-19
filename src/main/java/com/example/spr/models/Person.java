@@ -2,9 +2,9 @@ package com.example.spr.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
 @Table(name = "Person")
@@ -34,13 +34,60 @@ public class Person {
     private String email;
 
 
-    public Person() {
-    }
+    @OneToMany
+    @JoinTable(
+            name = "post",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "id")
+    )
+    private List<Post> postsPerson;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = {@JoinColumn(name = "channel_id")},
+            inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
+
+    )
+    private Set<Person> subscribers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = {@JoinColumn(name = "subscriber_id")},
+            inverseJoinColumns = {@JoinColumn(name = "channel_id")}
+
+    )
+    private Set<Person> subscriptions = new HashSet<>();
 
     public Person(String username, int yearOfBirth, String email) {
         this.username = username;
         this.yearOfBirth = yearOfBirth;
         this.email = email;
+    }
+
+    public Person() {
+
+    }
+
+    public Set<Person> getSubscribers() {
+        return subscribers;
+    }
+    public Person(List<Post> postsPerson) {
+        this.postsPerson = postsPerson;
+    }
+
+    public void setSubscribers(Set<Person> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    public Set<Person> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<Person> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     public int getId() {
@@ -91,6 +138,14 @@ public class Person {
         this.email = email;
     }
 
+    public List<Post> getPostsPerson() {
+        return postsPerson;
+    }
+
+
+    public void setPostsPerson(List<Post> postsPerson) {
+        this.postsPerson = postsPerson;
+    }
 
     @Override
     public String toString() {
