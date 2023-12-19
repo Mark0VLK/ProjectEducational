@@ -1,0 +1,14 @@
+package com.example.spr.models;
+
+
+public class Tweet {
+    String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}
