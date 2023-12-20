@@ -38,6 +38,18 @@ public class Post {
     )
     private List<Person> personList;
 
+    @Transient
+    private String base64Image;
+
+    // Геттеры и сеттеры для base64Image
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
+
     public Post(String post_text) {
     }
 
@@ -102,4 +114,5 @@ public class Post {
     public void setPhoto_name(String photo_name) {
         this.photo_name = photo_name;
     }
+
 }

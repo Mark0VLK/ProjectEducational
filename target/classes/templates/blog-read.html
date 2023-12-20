@@ -25,8 +25,8 @@
 <div class="container mt-5">
     <div th:each="el:${post}"  class="alert alert-info mt-2">
         <a th:text="${el.post_text} "/><br>
-        <img th:src="'data:image/jpeg;base64,' + ${el.photo_post}" alt="Post Image"/>    </div>
-
+        <img th:if="${el.getBase64Image()}" th:src="'data:image/jpeg;base64,' + ${el.base64Image}" alt="Post Image" />
+    </div>
 </div>
 </body>
 </html>
