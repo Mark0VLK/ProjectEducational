@@ -1,5 +1,7 @@
 package com.example.spr.models;
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.HashSet;
@@ -61,6 +63,10 @@ public class Person {
     )
     private Set<Person> subscriptions = new HashSet<>();
 
+
+
+//    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Set<Post> posts;
     public Person(String username, int yearOfBirth, String email) {
         this.username = username;
         this.yearOfBirth = yearOfBirth;

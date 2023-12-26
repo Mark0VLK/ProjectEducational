@@ -34,5 +34,13 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
 
+    public void subscribe(Person currentUser, Person person) {
+        person.getSubscribers().add(currentUser);
+        peopleRepository.save(person);
+    }
 
+    public void unsubscribe(Person currentUser, Person person) {
+        person.getSubscribers().remove(currentUser);
+        peopleRepository.save(person);
+    }
 }

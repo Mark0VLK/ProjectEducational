@@ -29,10 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
 
                 // статика
-                "/css/",
-                "/js/",
-                "/fonts/",
-                "/img/"
+                "/css/**",
+                "/js/**",
+                "/fonts/**",
+                "/img/**"
         );
     }
 
