@@ -5,6 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Your Profile</title>
+    <style>
+        .resized-image {
+            width: 125px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -26,28 +32,45 @@
     </ul>
 
 </nav>
-
+<!--<a th:if="${user.getPerson_photo()!=0}">-->
+<!--    <img  th:src="'data:image/jpeg;base64,' + ${user.getPerson_photo().base64Image}" alt="" class="resized-image"/>-->
+<!--</a>-->
+<!--<a th:unless="${user.getPerson_photo()!=0}">-->
+    <img  src="/img/logo1.jpeg" alt="" class="resized-image"/> <br>
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
+
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            Новости
+                        <a class="nav-link" href="/editprofile">
+                            Редактировать профиль
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="/persons">
                             Люди
                         </a>
-
+                    </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-
-                            Редактировать профиль
+                        <a class="nav-link" href="/feed">
+                            Лента
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/subscribers">
+                            Подписки
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/news">
+                            Новости
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="/blog/add">
                             Создать твит
@@ -58,11 +81,7 @@
                             Мои твиты
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/subscribers">
-                            Подписки
-                        </a>
-                    </li>
+
                 </ul>
 
             </div>

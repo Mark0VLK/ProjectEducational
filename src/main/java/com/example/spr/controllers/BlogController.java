@@ -1,10 +1,13 @@
 package com.example.spr.controllers;
 
+import com.example.spr.models.Comment;
 import com.example.spr.models.Person;
 import com.example.spr.models.Post;
 import com.example.spr.models.Tweet;
+import com.example.spr.repositories.CommentRepository;
 import com.example.spr.repositories.PeopleRepository;
 import com.example.spr.repositories.PostRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,14 +27,18 @@ import java.util.Optional;
 public class BlogController {
     private final PostRepository postRepository;
     private final PeopleRepository peopleRepository;
+    private final CommentRepository commentRepository;
+
 
     @Autowired
-    public BlogController(PostRepository postRepository, PeopleRepository peopleRepository) {
+    public BlogController(PostRepository postRepository, PeopleRepository peopleRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.peopleRepository = peopleRepository;
+
+        this.commentRepository = commentRepository;
     }
 
-
+    //Создание твитов с возможостью добавления фото
     @GetMapping("/blog/add")
     public String blogAdd(Model model) {
         Iterable<Post> posts = postRepository.findAll();
@@ -55,7 +62,7 @@ public class BlogController {
         return "redirect:/hello";
     }
 
-
+    //Чтение своих твитов
     @GetMapping("/blog/read")
     public String blogRead(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -67,7 +74,7 @@ public class BlogController {
 
 
         res.forEach(tweet -> {
-            if(tweet.getPhoto_post().length>0) {
+            if (tweet.getPhoto_post().length > 0) {
                 byte[] photoBytes = tweet.getPhoto_post();
                 String base64Image = Base64.getEncoder().encodeToString(photoBytes);
                 tweet.setBase64Image(base64Image);
@@ -77,6 +84,40 @@ public class BlogController {
         model.addAttribute("post", res);
 
         return "blog-read";
+    }
+
+    //Твиты подписчиков
+    @GetMapping("/news")
+    public String newsRead(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Person> person = peopleRepository.findByUsername(auth.getName());
+        Person currentUser = person.get();
+        Iterable<Post> post = postRepository.findAll();
+        post.forEach(tweet -> {
+            if (tweet.getPhoto_post().length > 0) {
+                byte[] photoBytes = tweet.getPhoto_post();
+                String base64Image = Base64.getEncoder().encodeToString(photoBytes);
+                tweet.setBase64Image(base64Image);
+            }
+        });
+        model.addAttribute("isCurrentUser", currentUser);
+        model.addAttribute("post", post);
+        return "news";
+    }
+
+    //Лента постов всех пользователей БД
+    @GetMapping("/postfeed")
+    public String postsRead(Model model) {
+        Iterable<Post> post = postRepository.findAll();
+        post.forEach(tweet -> {
+            if (tweet.getPhoto_post().length > 0) {
+                byte[] photoBytes = tweet.getPhoto_post();
+                String base64Image = Base64.getEncoder().encodeToString(photoBytes);
+                tweet.setBase64Image(base64Image);
+            }
+        });
+        model.addAttribute("post", post);
+        return "postfeed";
     }
 
 

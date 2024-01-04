@@ -1,6 +1,5 @@
 package com.example.spr.models;
 
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -64,9 +63,13 @@ public class Person {
     private Set<Person> subscriptions = new HashSet<>();
 
 
+    @Column(name = "person_photo")
+    byte[] person_photo;
 
-//    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<Post> posts;
+    @Column(name = "photo_name")
+    String photo_name;
+
+
     public Person(String username, int yearOfBirth, String email) {
         this.username = username;
         this.yearOfBirth = yearOfBirth;
@@ -80,6 +83,7 @@ public class Person {
     public Set<Person> getSubscribers() {
         return subscribers;
     }
+
     public Person(List<Post> postsPerson) {
         this.postsPerson = postsPerson;
     }
@@ -95,6 +99,7 @@ public class Person {
     public void setSubscriptions(Set<Person> subscriptions) {
         this.subscriptions = subscriptions;
     }
+
 
     public int getId() {
         return id;
@@ -151,6 +156,26 @@ public class Person {
 
     public void setPostsPerson(List<Post> postsPerson) {
         this.postsPerson = postsPerson;
+    }
+
+    public Person(byte[] person_photo) {
+        this.person_photo = person_photo;
+    }
+
+    public byte[] getPerson_photo() {
+        return person_photo;
+    }
+
+    public void setPerson_photo(byte[] person_photo) {
+        this.person_photo = person_photo;
+    }
+
+    public String getPhoto_name() {
+        return photo_name;
+    }
+
+    public void setPhoto_name(String photo_name) {
+        this.photo_name = photo_name;
     }
 
     @Override

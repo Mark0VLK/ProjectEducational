@@ -4,7 +4,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <head>
   <meta charset="UTF-8">
-  <title>Подписки</title>
+  <title>Лента</title>
 </head>
 <body>
 
@@ -26,23 +26,16 @@
   </ul>
 
 </nav>
-
 <div class="container mt-5">
 
-  <div th:each="el:${persons}" th:if="${el.username!=isCurrentUser.username}" class="alert alert-info mt-2">
+  <div th:each="el:${post}"  class="alert alert-info mt-2">
+    <h3 th:text="${el.person.username}"/>
+    <br>
+    <a th:text="${el.post_text} "/><br>
 
-    <a th:text="${el.username}"/>
-    <a th:if="${isCurrentUser.getSubscriptions().contains(el)}"><br>
-      <a class="btn btn-info" th:href="@{/unsubscribe/{userId}(userId=${el.id})}">Отписаться</a></a>
-    <a th:unless="${isCurrentUser.getSubscriptions().contains(el)}"><br>
-      <a class="btn btn-info" th:href="@{/subscribe/{userId}(userId=${el.id})}">Подписаться</a></a>
-
+    <img th:if="${el.getBase64Image()}" th:src="'data:image/jpeg;base64,' + ${el.base64Image}" alt="Post Image" /></a>
   </div>
-
 </div>
-
-</div>
-
 
 </body>
 </html>

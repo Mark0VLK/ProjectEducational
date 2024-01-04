@@ -3,6 +3,8 @@ package com.example.spr.services;
 import com.example.spr.models.Person;
 import com.example.spr.repositories.PeopleRepository;
 import com.example.spr.security.PersonDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,19 +30,34 @@ public class PersonDetailsService implements UserDetailsService {
         return new PersonDetails(person.get());
     }
 
+    public Person findById(int personId) {
+        Optional<Person> person = peopleRepository.findById(personId);
 
-    public List<Person> getAllPerson(){
+        return person.get();
+    }
+
+    public List<Person> getAllPerson() {
         return peopleRepository.findAll();
     }
 
 
     public void subscribe(Person currentUser, Person person) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Person> p = peopleRepository.findByUsername(auth.getName());
+        currentUser = p.get();
+        Optional<Person> per = peopleRepository.findById(person.getId());
+        Person person1 = per.get();
         person.getSubscribers().add(currentUser);
-        peopleRepository.save(person);
+        peopleRepository.save(person1);
     }
 
-    public void unsubscribe(Person currentUser, Person person) {
+    public void unsubscribe(Person currentUser, Person person ){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Person> p = peopleRepository.findByUsername(auth.getName());
+        currentUser = p.get();
+        Optional<Person> pers = peopleRepository.findById(person.getId());
+        Person person1 = pers.get();
         person.getSubscribers().remove(currentUser);
-        peopleRepository.save(person);
+        peopleRepository.save(person1);
     }
 }

@@ -1,8 +1,7 @@
 package com.example.spr.models;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +24,7 @@ public class Post {
 
 
     @Column(name = "post_photo")
-    byte [] photo_post;
+    byte[] photo_post;
 
     @Column(name = "photo_name")
     String photo_name;
@@ -37,6 +36,14 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "person_id")
     )
     private List<Person> personList;
+
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Like> likesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
 
     @Transient
     private String base64Image;
@@ -115,4 +122,23 @@ public class Post {
         this.photo_name = photo_name;
     }
 
+    public List<Like> getLikesList() {
+        return likesList;
+    }
+
+    public void setLikesList(List<Like> likesList) {
+        this.likesList = likesList;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public boolean isLikedByUser(Person person) {
+        return likesList.stream().anyMatch(like -> like.getPerson().equals(person));
+    }
 }

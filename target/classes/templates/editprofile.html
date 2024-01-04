@@ -4,9 +4,8 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <head>
   <meta charset="UTF-8">
-  <title>Подписки</title>
+  <title>Your Profile</title>
 </head>
-<body>
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
@@ -22,27 +21,18 @@
       </form>
     </li>
 
-
   </ul>
 
 </nav>
+<body>
+<div class="form-group">
+  <form method="POST" th:action="@{/profile/}"  enctype="multipart/form-data">
 
-<div class="container mt-5">
-
-  <div th:each="el:${persons}" th:if="${el.username!=isCurrentUser.username}" class="alert alert-info mt-2">
-
-    <a th:text="${el.username}"/>
-    <a th:if="${isCurrentUser.getSubscriptions().contains(el)}"><br>
-      <a class="btn btn-info" th:href="@{/unsubscribe/{userId}(userId=${el.id})}">Отписаться</a></a>
-    <a th:unless="${isCurrentUser.getSubscriptions().contains(el)}"><br>
-      <a class="btn btn-info" th:href="@{/subscribe/{userId}(userId=${el.id})}">Подписаться</a></a>
-
-  </div>
-
-</div>
-
-</div>
-
-
+  <br>
+  <a>Изменить фото профиля:</a><br>
+  <br>
+  <input type="file" name="file" class="form-control-file">
+  </form></div>
+<input type="submit" class="btn btn-success" value="Редактировать фото профиля"/>
 </body>
 </html>
