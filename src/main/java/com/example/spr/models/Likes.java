@@ -2,13 +2,16 @@ package com.example.spr.models;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "comment")
-public class Comment {
+@Table(name = "likes")
+
+public class Likes {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
+
 
     @ManyToOne
     @JoinColumn(name = "person_id",
@@ -22,17 +25,14 @@ public class Comment {
             nullable = false)
     private Post post;
 
-    @Column(name = "content")
-    private String content;
 
-    public Comment() {
-    }
 
-    public Long getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,11 +52,9 @@ public class Comment {
         this.post = post;
     }
 
-    public String getContent() {
-        return content;
-    }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+
 }
+
+
+

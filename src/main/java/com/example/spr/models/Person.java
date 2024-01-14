@@ -6,6 +6,7 @@ import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Person")
@@ -33,7 +34,6 @@ public class Person {
 
     @Column(name = "email")
     private String email;
-
 
     @OneToMany
     @JoinTable(
@@ -176,6 +176,11 @@ public class Person {
 
     public void setPhoto_name(String photo_name) {
         this.photo_name = photo_name;
+    }
+
+    public String generatePasswordResetToken() {
+        // Генерация уникального токена (например, с использованием UUID)
+        return UUID.randomUUID().toString();
     }
 
     @Override

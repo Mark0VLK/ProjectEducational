@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
+
     private final PersonValidator personValidator;
     private final RegistrationService reg;
 
@@ -41,9 +42,10 @@ public class AuthController {
 
         if(b.hasErrors())
             return "/auth/registration";
-
         reg.register(person);
         return "redirect:/auth/login";
+
+
     }
 
 

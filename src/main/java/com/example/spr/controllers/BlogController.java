@@ -1,13 +1,12 @@
 package com.example.spr.controllers;
 
-import com.example.spr.models.Comment;
 import com.example.spr.models.Person;
 import com.example.spr.models.Post;
+import com.example.spr.models.Reposts;
 import com.example.spr.models.Tweet;
-import com.example.spr.repositories.CommentRepository;
 import com.example.spr.repositories.PeopleRepository;
 import com.example.spr.repositories.PostRepository;
-
+import com.example.spr.services.RepostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -27,15 +27,14 @@ import java.util.Optional;
 public class BlogController {
     private final PostRepository postRepository;
     private final PeopleRepository peopleRepository;
-    private final CommentRepository commentRepository;
-
+    private final RepostsService repostService;
 
     @Autowired
-    public BlogController(PostRepository postRepository, PeopleRepository peopleRepository, CommentRepository commentRepository) {
+    public BlogController(PostRepository postRepository, PeopleRepository peopleRepository,
+                          RepostsService repostService) {
         this.postRepository = postRepository;
         this.peopleRepository = peopleRepository;
-
-        this.commentRepository = commentRepository;
+        this.repostService = repostService;
     }
 
     //Создание твитов с возможостью добавления фото
@@ -59,6 +58,7 @@ public class BlogController {
         post.setPhoto_name(file.getOriginalFilename());
         post.setPhoto_post(file.getBytes());
         postRepository.save(post);
+
         return "redirect:/hello";
     }
 
@@ -83,8 +83,12 @@ public class BlogController {
 
         model.addAttribute("post", res);
 
+
+        List<Reposts> reposts = repostService.getRepostsByUser(person1);
+        model.addAttribute("reposts", reposts);
         return "blog-read";
     }
+
 
     //Твиты подписчиков
     @GetMapping("/news")
@@ -117,9 +121,14 @@ public class BlogController {
             }
         });
         model.addAttribute("post", post);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Person> person = peopleRepository.findByUsername(auth.getName());
+        Person person1 = person.get();
+        List<Reposts> reposts = repostService.getRepostsByUser(person1);
+        model.addAttribute("isCurrentUser",person1);
+        model.addAttribute("reposts", reposts);
         return "postfeed";
     }
-
 
 }
 

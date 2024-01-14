@@ -29,21 +29,24 @@ public class Post {
     @Column(name = "photo_name")
     String photo_name;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
-            name = "person",
+            name = "post",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "person_id")
     )
     private List<Person> personList;
 
 
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Like> likesList = new ArrayList<>();
+    private List<Likes> likesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Reposts> reposts = new ArrayList<>();
 
     @Transient
     private String base64Image;
@@ -122,11 +125,11 @@ public class Post {
         this.photo_name = photo_name;
     }
 
-    public List<Like> getLikesList() {
+    public List<Likes> getLikesList() {
         return likesList;
     }
 
-    public void setLikesList(List<Like> likesList) {
+    public void setLikesList(List<Likes> likesList) {
         this.likesList = likesList;
     }
 
@@ -140,5 +143,18 @@ public class Post {
 
     public boolean isLikedByUser(Person person) {
         return likesList.stream().anyMatch(like -> like.getPerson().equals(person));
+    }
+
+    public List<Reposts> getReposts() {
+        return reposts;
+    }
+
+    public void setReposts(List<Reposts> reposts) {
+        this.reposts = reposts;
+    }
+
+    public boolean isRepostedByUser(Person user) {
+        return reposts.stream().anyMatch(repost -> repost.getPerson().equals(user));
+
     }
 }

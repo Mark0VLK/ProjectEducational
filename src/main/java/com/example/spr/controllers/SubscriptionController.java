@@ -68,4 +68,18 @@ public class SubscriptionController {
         );
         return "redirect:/persons";
     }
+
+//Список твоих подписок/подписчиков
+    @GetMapping("/subscribers")
+    public String getSubscriptions(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Person> pers = peopleRepository.findByUsername(auth.getName());
+        Person currentUser = pers.get();
+        model.addAttribute("persons", currentUser.getSubscribers());
+        model.addAttribute("isCurrentUser", currentUser);
+model.addAttribute("personsSubscribe",currentUser.getSubscriptions());
+
+        return "subscribers";
+    }
+
 }

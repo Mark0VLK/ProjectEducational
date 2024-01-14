@@ -1,6 +1,7 @@
 package com.example.spr.controllers;
 
-import com.example.spr.models.Like;
+
+import com.example.spr.models.Likes;
 import com.example.spr.models.Person;
 import com.example.spr.models.Post;
 import com.example.spr.repositories.LikeRepository;
@@ -40,15 +41,15 @@ public class LikeController {
             Post post = postOptional.get();
 
             // Проверка, не лайкнул ли пользователь уже этот пост
-//            if (!post.isLikedByUser(user)) {
-                Like like = new Like();
+            if (!post.isLikedByUser(user)) {
+                Likes like = new Likes();
                 like.setPerson(user);
                 like.setPost(post);
 
                 post.getLikesList().add(like);
                 postRepository.save(post);
 
-//            }
+            }
 
 
         }

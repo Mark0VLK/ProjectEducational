@@ -60,4 +60,6 @@ public class PersonDetailsService implements UserDetailsService {
         person.getSubscribers().remove(currentUser);
         peopleRepository.save(person1);
     }
+
+
 }
