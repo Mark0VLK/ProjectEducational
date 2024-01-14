@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<head>
+  <meta charset="UTF-8">
+  <title>Люди</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/hello">На главную</a>
+    <div th:text="${#authentication.name}"></div>
+  </a>
+
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+
+      <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" class="btn btn-success"  value="Выход"/>
+      </form>
+    </li>
+
+
+  </ul>
+
+</nav>
+
+<div class="container mt-5">
+
+  <div th:each="el:${persons}" th:if="${el.username!=isCurrentUser.username}" class="alert alert-info mt-2">
+
+    <a th:text="${el.username}"/>
+    <a th:if="${isCurrentUser.getSubscriptions().contains(el)}"><br>
+      <a class="btn btn-info" th:href="@{/unsubscribe/{userId}(userId=${el.id})}">Отписаться</a></a>
+    <a th:unless="${isCurrentUser.getSubscriptions().contains(el)}"><br>
+      <a class="btn btn-success"  th:href="@{/subscribe/{userId}(userId=${el.id})}">Подписаться</a></a>
+
+  </div>
+
+</div>
+
+</div>
+
+
+</body>
+</html>
